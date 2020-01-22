@@ -6,7 +6,7 @@ public class Calculator {
 
     public static void main(String[] args) throws Exception {
 
-        System.out.println(add("-1,-2,-3,8,8,898,8,5-566,-455,Joshua--22243,4"));
+        System.out.println(add("//***\n1***2***3"));
 
     }
 
@@ -14,22 +14,34 @@ public class Calculator {
 
         if (string.length() >=2 && string.substring(0, 2).equals("//")) {
 
-            Pattern delim = Pattern.compile("\\[.*?\\]");
-            Matcher matcherDelim = delim.matcher(string);
+            Pattern delimiter = Pattern.compile("\\[.*?\\]");
+            Matcher matcherDelimiter = delimiter.matcher(string);
 
-            while (matcherDelim.find()) {
-                int closeBraket = matcherDelim.group().indexOf("]");
-                string = string.replace(matcherDelim.group().substring(1,closeBraket),",");
+            while (matcherDelimiter.find()) {
+                int closeBraket = matcherDelimiter.group().indexOf("]");
+                string = string.replace(matcherDelimiter.group().substring(1,closeBraket),",");
             }
+
             string =  string.replace(string.substring(2,string.indexOf("\n")),",");
+            string = string.replace("\n","");
         }
+        else {
+            string = string.replace("\n",",");
+        }
+
+        string = string.replace("//,","");
+
         Pattern pattern = Pattern.compile(numberPatterns);
         Matcher matcher = pattern.matcher(string);
         StringBuilder negative = new StringBuilder("ERROR: negatives not allowed");
+        StringBuilder format = new StringBuilder();
 
         int n = 0;
         while (matcher.find()) {
             int m = Integer.parseInt(matcher.group());
+
+            format.append(m).append(",");
+
             if (m <0) {
                 negative.append(" ").append(m).append(",");
             }
@@ -42,6 +54,12 @@ public class Calculator {
         }
         if (!negative.toString().equals("ERROR: negatives not allowed")) {
             throw new Exception(negative.toString().substring(0,negative.toString().length()-1));
+        }
+
+        if (string.length() != 0) {
+            if (!string.trim().equals(format.toString().substring(0,format.toString().length()-1))){
+                throw new Exception("ERROR: invalid input");
+            }
         }
         return n;
     }
