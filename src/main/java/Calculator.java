@@ -15,11 +15,11 @@ public class Calculator {
      * @param args String argument.
      * @throws Exception invokes a static method that throws exception.
      */
-    public static void main(String[] args) throws Exception {
-
-        System.out.println(add(""));
-
-    }
+//    public static void main(String[] args) throws Exception {
+//
+//        System.out.println(add(""));
+//
+//    }
 
     /**
      * A method that takes a string as a parameter and returns the sum of the digits in the string.
@@ -28,39 +28,31 @@ public class Calculator {
      * @throws Exception        Throws exception if the string is not in the required format.
      */
     static int add(String string) throws Exception {
-
         if (string.length() >=2 && string.substring(0, 2).equals("//")) {   // check if a string has delimiters.
-
             Pattern delimiter = Pattern.compile("\\[.*?\\]");
             Matcher matcherDelimiter = delimiter.matcher(string);
-
             while (matcherDelimiter.find()) {             // find all delimiters and replace them with commas.
-
                 int closeBraket = matcherDelimiter.group().indexOf("]");
                 string = string.replace(matcherDelimiter.group().substring(1,closeBraket),",");
-
             }
-
             string =  string.replace(string.substring(2,string.indexOf("\n")),","); // replace //[delimiter]...[delimiter]\n..., with //,\n
             string = string.replace("\n","");
         }
         else {
             string = string.replace("\n",",");
         }
-
         string = string.replace("//,","");
 
         Pattern pattern = Pattern.compile(numberPatterns);
         Matcher matcher = pattern.matcher(string);
+
+
         StringBuilder negative = new StringBuilder("ERROR: negatives not allowed");
         StringBuilder format = new StringBuilder();
-
         int n = 0;
         while (matcher.find()) {
             int m = Integer.parseInt(matcher.group());
-
             format.append(m).append(",");
-
             if (m <0) {
                 negative.append(" ").append(m).append(",");
             }
